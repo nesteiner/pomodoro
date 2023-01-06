@@ -16,6 +16,7 @@ class CounterWidget extends StatelessWidget {
         width: WIDTH,
         decoration: const BoxDecoration(color: Color.fromRGBO(255, 255, 255, 0.1)),
         padding: const EdgeInsets.only(top: 20, bottom: 30),
+        margin: const EdgeInsets.only(top: 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

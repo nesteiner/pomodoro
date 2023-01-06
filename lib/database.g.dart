@@ -172,7 +172,17 @@ class _$TaskDao extends TaskDao {
   }
 
   @override
+  Future<void> updateAll(List<Task> tasks) async {
+    await _taskUpdateAdapter.updateList(tasks, OnConflictStrategy.abort);
+  }
+
+  @override
   Future<void> deleteOne(Task task) async {
     await _taskDeletionAdapter.delete(task);
+  }
+
+  @override
+  Future<void> deleteAll(List<Task> tasks) async {
+    await _taskDeletionAdapter.deleteList(tasks);
   }
 }

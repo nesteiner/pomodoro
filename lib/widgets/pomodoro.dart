@@ -21,8 +21,13 @@ class Pomodoro extends StatelessWidget {
       }
     };
 
-    final column = Column(
-      children: [CounterWidget(), TaskBoard()],
+    final column = SingleChildScrollView(
+      child: Column(
+        children: [
+          CounterWidget(),
+          TaskBoard(),
+        ],
+      ),
     );
 
     final container = Consumer<PomodoroState>(
@@ -34,10 +39,6 @@ class Pomodoro extends StatelessWidget {
 
     final sizedbox = SizedBox.expand(
       child: container,
-    );
-
-    final cliprect = ClipRect(
-      child: sizedbox,
     );
 
     return FutureBuilder(

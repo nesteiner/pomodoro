@@ -113,4 +113,23 @@ class PomodoroState extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> deleteAllTasks() async {
+    await taskdao.deleteAll(tasks);
+    tasks = [];
+    selectedTask = null;
+    notifyListeners();
+  }
+
+  Future<void> deleteFinishedTasks() async {
+    await taskdao.deleteAll(tasks.where((element) => element.isdone).toList());
+    tasks.removeWhere((element) => element.isdone);
+    notifyListeners();
+  }
+
+  Future<void> clearActPomodoro() async {
+    tasks.forEach((element) { element.act = 0; });
+    await taskdao.updateAll(tasks);
+    notifyListeners();
+  }
 }

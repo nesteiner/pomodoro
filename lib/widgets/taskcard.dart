@@ -38,15 +38,27 @@ class TaskCardState extends State<TaskCard> {
           children: [
             Container(
                 margin: const EdgeInsets.only(right: 10),
-                child: Image.asset(
-                  "assets/ok.png",
-                  width: 22,
-                  height: 22,
-                  color: widget.isselected ? Colors.red : null,
+                child: GestureDetector(
+                  child: Image.asset(
+                    "assets/ok.png",
+                    width: 22,
+                    height: 22,
+                    color: widget.task.isdone ? Colors.red : null,
+                  ),
+
+                  onTap: () {
+                    setState(() {
+                      widget.task.isdone = !widget.task.isdone;
+                    });
+                  },
                 )),
             Text(
               widget.task.text,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: widget.task.isdone ? Colors.grey : Colors.black,
+                decoration: widget.task.isdone ? TextDecoration.lineThrough : null
+              ),
             ),
           ],
         ),
@@ -59,7 +71,8 @@ class TaskCardState extends State<TaskCard> {
                     expanded = true;
                   });
 
-                  widget.state.selectedTask = widget.task;
+                  // widget.state.selectedTask = widget.task;
+                  widget.state.setTask(widget.task);
                 },
                 icon: const Icon(Icons.more_vert))
           ],
@@ -74,14 +87,22 @@ class TaskCardState extends State<TaskCard> {
             border: Border(
                 left: widget.isselected
                     ? const BorderSide(color: Color.fromRGBO(34, 34, 34, 1), width: 6)
-                    : const BorderSide())),
+                    : const BorderSide(color: Colors.transparent, width: 0))),
         child: row);
 
     return GestureDetector(
       onTap: () {
-        widget.state.setTask(widget.task);
         setState(() {
+          widget.isselected = true;
           expanded = false;
+        });
+
+        widget.state.setTask(widget.task);
+      },
+
+      onDoubleTap: () {
+        setState(() {
+          widget.isselected = true;
         });
       },
 

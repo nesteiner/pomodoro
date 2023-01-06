@@ -21,8 +21,11 @@ class TaskBoardState extends State<TaskBoard> {
 
   @override
   Widget build(BuildContext context) {
-    final listview = Consumer<PomodoroState>(
-        builder: (_, PomodoroState state, child) => ReorderableListView.builder(
+    return Consumer<PomodoroState>(
+      builder: (_, state, child) {
+        final taskoperations = buildTaskOperations(context, state);
+
+        final listview = ReorderableListView.builder(
           shrinkWrap: true,
           buildDefaultDragHandles: false,
           itemCount: state.tasks.length,
@@ -39,33 +42,103 @@ class TaskBoardState extends State<TaskBoard> {
           itemBuilder: (context, index) {
             final task = state.tasks[index];
             return ReorderableDragStartListener(
-              key: Key(task.id.toString()),
-              index: index,
-              child: TaskCard(task, false, state)
+                key: Key(task.id.toString()),
+                index: index,
+                child: TaskCard(task, false, state)
             );
           },
-        ));
+        );
 
-    final addtask = Consumer<PomodoroState>(
-        builder: (_, state, child) => buildAddTask(context, state));
+        final addtask = buildAddTask(context, state);
 
-    return Column(
-      children: [
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 500, maxWidth: WIDTH),
-          child: listview,
-        ),
-
-        SizedBox(
-          width: WIDTH,
-          child: addtask,
-        )
-
-      ],
+        return ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: WIDTH),
+          child: Column(
+            children: [
+              taskoperations,
+              listview,
+              addtask
+            ],
+          ));
+      },
     );
 
   }
 
+
+  Widget buildTaskOperations(BuildContext context, PomodoroState state) {
+    const text = Text("Tasks", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),);
+    const line = Divider(color: Colors.white,);
+
+    const textstyle = TextStyle(color: Colors.black, fontSize: 18);
+    final button = PopupMenuButton(
+      child: const Icon(Icons.more_vert, color: Colors.white,),
+        itemBuilder: (context) => [
+          PopupMenuItem(
+              onTap: () async {
+                await state.deleteFinishedTasks();
+              },
+
+              child: Row(
+                children: [
+                  const Icon(Icons.delete, color: Colors.black,),
+                  const SizedBox(width: 10,),
+                  const Text("Clear finished task", style: textstyle,),
+                ],
+              )
+
+          ),
+
+          PopupMenuItem(
+              onTap: () async {
+                await state.clearActPomodoro();
+              },
+
+              child: Row(
+                children: [
+                  const Icon(Icons.clear, color: Colors.black,),
+                  const SizedBox(width: 10,),
+                  const Text("Clear act pomodoro", style: textstyle,),
+                ],
+              )
+
+          ),
+
+          PopupMenuItem(
+              onTap: () async {
+                await state.deleteAllTasks();
+              },
+
+              child: Row(
+                children: [
+                  const Icon(Icons.delete, color: Colors.black,),
+                  const SizedBox(width: 10,),
+                  const Text("Clear all tasks", style: textstyle,),
+                ],
+              )
+          )
+        ]
+    );
+
+    final column = Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            text,
+            button
+          ],
+        ),
+
+        line
+      ],
+    );
+
+    return Container(
+      margin: const EdgeInsets.only(top: 20),
+      child: column,
+    );
+  }
 
   Widget buildAddTask(BuildContext context, PomodoroState state) {
     return expanded ? buildAddTaskExpand(context, state) : buildAddTaskOriginal(context, state);
@@ -73,12 +146,12 @@ class TaskBoardState extends State<TaskBoard> {
 
   Widget buildAddTaskOriginal(BuildContext context, PomodoroState state) {
     final container = Container(
-      margin: EdgeInsets.only(top: 12),
+      margin: const EdgeInsets.only(top: 12),
       height: 64,
       decoration: BoxDecoration(
-          color: Color.fromRGBO(0, 0, 0, 0.1),
+          color: const Color.fromRGBO(0, 0, 0, 0.1),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Color.fromRGBO(255, 255, 255, 0.4), width: 2)
+          border: Border.all(color: const Color.fromRGBO(255, 255, 255, 0.4), width: 2)
       ),
 
       child: Row(
@@ -87,15 +160,15 @@ class TaskBoardState extends State<TaskBoard> {
           Container(
             width: 18,
             height: 18,
-            margin: EdgeInsets.only(right: 8),
+            margin: const EdgeInsets.only(right: 8),
             child: Image.asset("assets/plus-circle-white.png"),
           ),
 
-          Text("Add Task", style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromRGBO(0, 0, 0, 0.8)),)
+          const Text("Add Task", style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromRGBO(0, 0, 0, 0.8)),)
         ],
       ),
     );
-      
+
 
 
     final opacity = Opacity(
@@ -130,8 +203,8 @@ class TaskBoardState extends State<TaskBoard> {
         margin: const EdgeInsets.only(bottom: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Text(
+          children: const [
+            Text(
               "Act/Est Pomodoros",
               style: TextStyle(
                   color: Color.fromRGBO(85, 85, 85, 1),
