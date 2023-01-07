@@ -132,4 +132,27 @@ class PomodoroState extends ChangeNotifier {
     await taskdao.updateAll(tasks);
     notifyListeners();
   }
+
+  void setTimes({
+    required int pomodoroTime,
+    required int shortBreakTime,
+    required int longBreakTime,
+    required int longBreakInterval
+  }) {
+    this.pomodoroTime = pomodoroTime;
+    this.shortBreakTime = shortBreakTime;
+    this.longBreakTime = longBreakTime;
+    this.longBreakInterval = longBreakInterval;
+    counter = Counter(pomodoroTime, shortBreakTime, longBreakTime, longBreakInterval: longBreakInterval);
+    notifyListeners();
+  }
+
+  void resetTimes() {
+    pomodoroTime = 25;
+    shortBreakTime = 5;
+    longBreakTime = 15;
+    longBreakInterval = 4;
+
+    notifyListeners();
+  }
 }
