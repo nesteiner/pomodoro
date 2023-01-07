@@ -1,5 +1,13 @@
 * Pomodoro
 
 https://user-images.githubusercontent.com/46296608/211150044-9b6dbeba-e653-45c7-933c-24a1d727572b.mp4
+
+** Build
+to run this application
+#+begin_src bash
+  flutter create . --platform=linux
+  flutter pub get
+  flutter run --release
+#+end_src
 ** Note
 *** StatefulBuilder 局部更新
