@@ -2,6 +2,7 @@
 
 https://user-images.githubusercontent.com/46296608/211150044-9b6dbeba-e653-45c7-933c-24a1d727572b.mp4
 
+这个项目参考自 *pomofocus.io* 这个网站
 ** Build
 to run this application
 #+begin_src bash
@@ -9,5 +10,3 @@ to run this application
   flutter pub get
   flutter run --release
 #+end_src
-** Note
-*** StatefulBuilder 局部更新

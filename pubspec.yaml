@@ -37,6 +37,7 @@ dependencies:
   provider: ^6.0.4
   floor: ^1.3.0
   path_provider: ^2.0.11
+  audioplayers: ^1.2.0
 
 dev_dependencies:
   flutter_test:
@@ -95,3 +96,4 @@ flutter:
   assets:
     - assets/ok.png
     - assets/plus-circle-white.png
+    - assets/notifaction.mp3

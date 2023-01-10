@@ -18,11 +18,11 @@ class SettingState extends State<Setting> {
   @override
   Widget build(BuildContext context) {
     return Consumer<PomodoroState>(
-        builder: (_, state, child) => buildHead(context, state)
+        builder: (_, state, child) => buildHead(context)
     );
   }
 
-  Widget buildHead(BuildContext context, PomodoroState state) {
+  Widget buildHead(BuildContext context) {
     return SizedBox(
       width: 620,
       height: 60,
@@ -30,13 +30,14 @@ class SettingState extends State<Setting> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Text("Pomodoro", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),),
-          buildSettingButton(context, state)
+          buildSettingButton(context)
         ]
       ),
     );
   }
 
-  Widget buildSettingButton(BuildContext context, PomodoroState state) {
+  Widget buildSettingButton(BuildContext context) {
+    final state = context.read<PomodoroState>();
     return IconButton(
         onPressed: () {
           showDialog(
@@ -79,7 +80,7 @@ class SettingState extends State<Setting> {
               min: 10,
               max: 100,
               divisions: 18,
-              
+
               onChanged: (value) {
                 setState(() {
                   widget.pomodoroTime = value.toInt();

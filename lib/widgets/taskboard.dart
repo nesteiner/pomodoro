@@ -24,7 +24,6 @@ class TaskBoardState extends State<TaskBoard> {
     return Consumer<PomodoroState>(
       builder: (_, state, child) {
         final taskoperations = buildTaskOperations(context, state);
-
         final listview = ReorderableListView.builder(
           shrinkWrap: true,
           buildDefaultDragHandles: false,

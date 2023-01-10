@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:pomodoro/models/focusstate.dart';
 import 'package:pomodoro/models/status.dart';
 
@@ -12,6 +15,9 @@ class Counter {
   late int interval = 0;
   late bool isfinished = false;
   late Status status;
+
+  AudioPlayer audioPlayer = AudioPlayer()..setReleaseMode(ReleaseMode.release);
+  AssetSource musicUrl = AssetSource("notifaction.mp3");
 
   Counter(this.pomodoroTime, this.shortBreakTime, this.longBreakTime, {
     this.longBreakInterval = 4
@@ -33,9 +39,14 @@ class Counter {
         isfinished = true;
         status = Status.paused;
 
+        audioPlayer.play(musicUrl);
+        Timer(Duration(seconds: 3), () async {
+          await audioPlayer.release();
+        });
+
         if(focusState == FocusState.pomodoro) {
           interval += 1;
-
+          
           if(interval % longBreakInterval == 0) {
             setFocusState(FocusState.longBreak);
           } else {
@@ -49,7 +60,6 @@ class Counter {
   }
 
   void setFocusState(FocusState focusState) {
-    // this.isfinished = false;
     this.focusState = focusState;
     currentTime[1] = 0;
     if(focusState == FocusState.pomodoro) {
