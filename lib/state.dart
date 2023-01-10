@@ -63,7 +63,7 @@ class PomodoroState extends ChangeNotifier {
 
   void startCountDown() {
     counter.isfinished = false;
-    timer = Timer.periodic(const Duration(milliseconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if(counter.isfinished) {
           timer.cancel();
           if(counter.focusState != FocusState.pomodoro) {
